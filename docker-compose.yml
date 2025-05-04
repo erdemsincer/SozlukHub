@@ -17,7 +17,7 @@ services:
   authservice-api:
     build:
       context: .
-      dockerfile: /AuthService/Dockerfile
+      dockerfile: AuthService/Dockerfile
     container_name: authservice-api
     depends_on:
       - auth-postgres
@@ -27,5 +27,32 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=auth-postgres;Port=5432;Database=authdb;Username=admin;Password=admin123
 
+  users-postgres:
+    image: postgres:15
+    container_name: users-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: usersdb
+    ports:
+      - "55732:5432"
+    volumes:
+      - users_pgdata:/var/lib/postgresql/data
+
+  userservice-api:
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    container_name: userservice-api
+    depends_on:
+      - users-postgres
+    ports:
+      - "5602:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=users-postgres;Port=5432;Database=usersdb;Username=admin;Password=admin123
+
 volumes:
   auth_pgdata:
+  users_pgdata:
