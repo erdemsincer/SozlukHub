@@ -1,4 +1,5 @@
-﻿using UserService.Entities;
+﻿using UserService.Dtos;
+using UserService.Entities;
 
 namespace UserService.Services
 {
@@ -6,5 +7,7 @@ namespace UserService.Services
     {
         Task<User?> GetByIdAsync(int id);
         Task CreateUserAsync(User user);
+        Task UpdateProfileAsync(int id, string? avatarUrl, string? bio);
+
     }
 }
