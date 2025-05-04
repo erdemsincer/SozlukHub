@@ -4,11 +4,14 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
+
+COPY AuthService/AuthService.csproj ./
+RUN dotnet restore AuthService.csproj
+
+COPY AuthService/. ./
+RUN dotnet publish AuthService.csproj -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "SozlukHub.AuthService.dll"]
+ENTRYPOINT ["dotnet", "AuthService.dll"]
