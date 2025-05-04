@@ -8,5 +8,6 @@ namespace UserService.Repositories
         Task<User?> GetByUsernameAsync(string username);
         Task AddAsync(User user);
         Task SaveChangesAsync();
+        Task UpdateProfileAsync(int id, string avatarUrl, string bio);
     }
 }
