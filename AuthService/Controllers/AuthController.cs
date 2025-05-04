@@ -2,9 +2,10 @@
 using AuthService.Entities;
 using AuthService.Models;
 using AuthService.Services;
-using Microsoft.AspNetCore.Http;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -16,11 +17,13 @@ namespace AuthService.Controllers
     {
         private readonly AuthDbContext _context;
         private readonly JwtService _jwtService;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public AuthController(AuthDbContext context, JwtService jwtService)
+        public AuthController(AuthDbContext context, JwtService jwtService, IPublishEndpoint publishEndpoint)
         {
             _context = context;
             _jwtService = jwtService;
+            _publishEndpoint = publishEndpoint;
         }
 
         // 🔐 REGISTER
@@ -41,6 +44,14 @@ namespace AuthService.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            // ✅ Event yayınla
+            await _publishEndpoint.Publish(new UserCreatedEvent
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email
+            });
+
             var token = _jwtService.GenerateToken(user);
             return Ok(token);
         }
@@ -57,7 +68,6 @@ namespace AuthService.Controllers
             return Ok(token);
         }
 
-        // 🧂 Şifre hashleme
         private string HashPassword(string password)
         {
             using var sha = SHA256.Create();
@@ -65,7 +75,6 @@ namespace AuthService.Controllers
             return Convert.ToBase64String(sha.ComputeHash(bytes));
         }
 
-        // 🔍 Şifre kontrol
         private bool VerifyPassword(string password, string hash)
         {
             return HashPassword(password) == hash;
