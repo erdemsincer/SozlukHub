@@ -10,19 +10,19 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: authdb
     ports:
-      - "5433:5432"
+      - "55632:5432"
     volumes:
       - auth_pgdata:/var/lib/postgresql/data
 
   authservice-api:
     build:
-      context: ./AuthService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: /AuthService/Dockerfile
     container_name: authservice-api
     depends_on:
       - auth-postgres
     ports:
-      - "5501:8080"
+      - "5601:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=auth-postgres;Port=5432;Database=authdb;Username=admin;Password=admin123
