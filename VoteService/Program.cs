@@ -7,13 +7,15 @@ using System.Text;
 using VoteService.Data;
 using VoteService.Repositories;
 using VoteService.Services;
+using VoteService.Consumers;           // 👈 bunu ekle
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ✨ Claim map fix (nameid vs ClaimTypes.NameIdentifier)
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-// 🔧 Add Controllers & Swagger
+// 🔧 Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -46,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// 🔧 PostgreSQL bağlantısı
+// 🔧 PostgreSQL
 builder.Services.AddDbContext<VoteDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -54,7 +56,27 @@ builder.Services.AddDbContext<VoteDbContext>(options =>
 builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 builder.Services.AddScoped<IVoteService, VoteService.Services.VoteService>();
 
-// 🔐 JWT Authentication
+// 🚌 MassTransit + RabbitMQ Consumer ekleniyor
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<EntryCreatedConsumer>(); // 👈 consumer ekleniyor
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint("entry-created-event", e =>
+        {
+            e.ConfigureConsumer<EntryCreatedConsumer>(context);
+        });
+    });
+});
+
+// 🔐 JWT Auth
 var jwtSecret = builder.Configuration["JwtSettings:Secret"];
 var key = Encoding.ASCII.GetBytes(jwtSecret);
 
@@ -73,7 +95,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// 🌐 Middleware pipeline
+// 🌐 Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -81,10 +103,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication(); // 👈 Önce authentication
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

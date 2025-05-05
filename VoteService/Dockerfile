@@ -1,15 +1,25 @@
-﻿# Build aşaması
+﻿# 🔧 Build aşaması
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY VoteService/VoteService.csproj ./
+# Proje dosyalarını kopyala
+COPY Shared/Shared.csproj ../Shared/
+COPY VoteService/VoteService.csproj ./VoteService/
+
+# Restore işlemi
+WORKDIR /src/VoteService
 RUN dotnet restore
 
+# Kaynak dosyaları kopyala
+COPY Shared/ ../Shared/
 COPY VoteService/. ./
+
+# Yayınla
 RUN dotnet publish -c Release -o /app/publish
 
-# Runtime aşaması
+# 🚀 Runtime aşaması
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "VoteService.dll"]
