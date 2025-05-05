@@ -6,6 +6,6 @@ namespace EntryService.Services
     {
         Task<Entry?> GetByIdAsync(int id);
         Task<List<Entry>> GetAllAsync();
-        Task CreateEntryAsync(Entry entry)
+        Task CreateEntryAsync(Entry entry);
     }
 }
