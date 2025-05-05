@@ -1,11 +1,13 @@
-﻿using EntryService.Entities;
+﻿using EntryService.Dtos;
+using EntryService.Entities;
 
 namespace EntryService.Services
 {
     public interface IEntryService
     {
-        Task<Entry?> GetByIdAsync(int id);
-        Task<List<Entry>> GetAllAsync();
-        Task CreateEntryAsync(Entry entry);
+        Task<List<EntryDto>> GetAllAsync();
+        Task<EntryDto?> GetByIdAsync(int id);
+        Task CreateAsync(CreateEntryDto dto, int userId, string username);
+        Task DeleteAsync(int id);
     }
 }
