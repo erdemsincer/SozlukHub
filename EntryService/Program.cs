@@ -1,54 +1,55 @@
-﻿using EntryService.Data;
-using EntryService.Repositories;
-using EntryService.Services;
-using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using EntryService.Data;
+using EntryService.Repositories;
+using EntryService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 🔧 Controller + Swagger + JWT Setup
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(c =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Entry API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "EntryService API", Version = "v1" });
 
-    // 🔐 JWT destekli authorize eklemesi
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "JWT token'ı giriniz. Örn: Bearer {token}"
+        Description = "Bearer {token}"
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
+// 🔧 PostgreSQL bağlantısı
 builder.Services.AddDbContext<EntryDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 🔧 Scoped servisler
 builder.Services.AddScoped<IEntryRepository, EntryRepository>();
 builder.Services.AddScoped<IEntryService, EntryService.Services.EntryService>();
 
+// 🔧 HttpClient (TopicService'e bağlanmak için) 👇
+builder.Services.AddHttpClient<IEntryService, EntryService.Services.EntryService>();
+
+// 🔐 JWT
 var jwtSecret = builder.Configuration["JwtSettings:Secret"];
 var key = Encoding.ASCII.GetBytes(jwtSecret);
 
@@ -65,18 +66,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddMassTransit(x =>
-{
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host("rabbitmq", "/", h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-        });
-    });
-});
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -86,9 +75,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.Run();

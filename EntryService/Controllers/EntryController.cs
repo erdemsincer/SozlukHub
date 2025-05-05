@@ -20,10 +20,7 @@ namespace EntryService.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
-        {
-            var entries = await _service.GetAllAsync();
-            return Ok(entries);
-        }
+            => Ok(await _service.GetAllAsync());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -38,7 +35,7 @@ namespace EntryService.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var username = User.FindFirstValue(ClaimTypes.Name);
 
-            if (userId == null || username == null)
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(username))
                 return Unauthorized();
 
             await _service.CreateAsync(dto, int.Parse(userId), username);
