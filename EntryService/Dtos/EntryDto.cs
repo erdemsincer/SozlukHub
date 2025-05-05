@@ -6,6 +6,7 @@
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
         public int TopicId { get; set; }
+        public string TopicName { get; set; } = null!;
         public int UserId { get; set; }
         public string Username { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
