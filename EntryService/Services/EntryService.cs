@@ -1,6 +1,8 @@
 ﻿using EntryService.Dtos;
 using EntryService.Entities;
 using EntryService.Repositories;
+using MassTransit;
+using Shared.Contracts;
 using System.Text.Json;
 
 namespace EntryService.Services
@@ -9,10 +11,13 @@ namespace EntryService.Services
     {
         private readonly IEntryRepository _repo;
         private readonly HttpClient _http;
-        public EntryService(IEntryRepository repo, HttpClient http)
+        private readonly IPublishEndpoint _publish;
+
+        public EntryService(IEntryRepository repo, HttpClient http, IPublishEndpoint publish)
         {
             _repo = repo;
             _http = http;
+            _publish = publish;
         }
 
         public async Task<List<EntryDto>> GetAllAsync()
@@ -30,7 +35,10 @@ namespace EntryService.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-                        var topic = JsonSerializer.Deserialize<TopicResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        var topic = JsonSerializer.Deserialize<TopicResponse>(json, new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
                         topicName = topic?.Name ?? "";
                     }
                 }
@@ -57,7 +65,6 @@ namespace EntryService.Services
             return result;
         }
 
-
         public async Task<EntryDto?> GetByIdAsync(int id)
         {
             var e = await _repo.GetByIdAsync(id);
@@ -70,7 +77,10 @@ namespace EntryService.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var topic = JsonSerializer.Deserialize<TopicResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var topic = JsonSerializer.Deserialize<TopicResponse>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
                     topicName = topic?.Name ?? "";
                 }
             }
@@ -94,7 +104,6 @@ namespace EntryService.Services
             };
         }
 
-
         public async Task CreateAsync(CreateEntryDto dto, int userId, string username)
         {
             var entry = new Entry
@@ -105,7 +114,15 @@ namespace EntryService.Services
                 UserId = userId,
                 Username = username
             };
+
             await _repo.CreateAsync(entry);
+
+            // 🔥 Event fırlatılıyor
+            await _publish.Publish(new EntryCreatedEvent
+            {
+                EntryId = entry.Id,
+                UserId = entry.UserId
+            });
         }
 
         public async Task DeleteAsync(int id)

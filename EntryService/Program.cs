@@ -6,6 +6,7 @@ using System.Text;
 using EntryService.Data;
 using EntryService.Repositories;
 using EntryService.Services;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,8 +47,21 @@ builder.Services.AddDbContext<EntryDbContext>(options =>
 builder.Services.AddScoped<IEntryRepository, EntryRepository>();
 builder.Services.AddScoped<IEntryService, EntryService.Services.EntryService>();
 
-// 🔧 HttpClient (TopicService'e bağlanmak için) 👇
+// 🔧 HttpClient (TopicService'e bağlanmak için)
 builder.Services.AddHttpClient<IEntryService, EntryService.Services.EntryService>();
+
+// 🚌 MassTransit + RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host("rabbitmq", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+});
 
 // 🔐 JWT
 var jwtSecret = builder.Configuration["JwtSettings:Secret"];
