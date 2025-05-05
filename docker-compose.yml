@@ -101,7 +101,7 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: entrydb
     ports:
-      - "55832:5432"  
+      - "55832:5432"
     volumes:
       - entry_pgdata:/var/lib/postgresql/data
 
@@ -119,8 +119,36 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=entry-postgres;Port=5432;Database=entrydb;Username=admin;Password=admin123
 
+  vote-postgres:
+    image: postgres:15
+    container_name: vote-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: votedb
+    ports:
+      - "55952:5432"
+    volumes:
+      - vote_pgdata:/var/lib/postgresql/data
+
+  voteservice-api:
+    build:
+      context: .
+      dockerfile: VoteService/Dockerfile
+    container_name: voteservice-api
+    depends_on:
+      - vote-postgres
+      - rabbitmq
+    ports:
+      - "5605:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=vote-postgres;Port=5432;Database=votedb;Username=admin;Password=admin123
+
 volumes:
   auth_pgdata:
   users_pgdata:
   topic_pgdata:
   entry_pgdata:
+  vote_pgdata:
