@@ -202,6 +202,20 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=review-postgres;Port=5432;Database=reviewdb;Username=admin;Password=admin123
 
+
+  frontend:
+    build:
+      context: ./sozlukhub-ui
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "9001:8080"
+    depends_on:
+      - authservice-api
+    networks:
+      - sozlukhub
+
+
 volumes:
   auth_pgdata:
   users_pgdata:
@@ -210,4 +224,8 @@ volumes:
   vote_pgdata:
   notification_pgdata:
   review_pgdata:
+
+networks:
+  sozlukhub:
+    driver: bridge
 
