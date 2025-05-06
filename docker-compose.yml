@@ -174,6 +174,34 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=notification-postgres;Port=5432;Database=notificationdb;Username=admin;Password=admin123
 
+
+  review-postgres:
+    image: postgres:15
+    container_name: review-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: reviewdb
+    ports:
+      - "55992:5432"
+    volumes:
+      - review_pgdata:/var/lib/postgresql/data
+
+  reviewservice-api:
+    build:
+      context: .
+      dockerfile: ReviewService/Dockerfile
+    container_name: reviewservice-api
+    depends_on:
+      - review-postgres
+      - rabbitmq
+    ports:
+      - "5607:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=review-postgres;Port=5432;Database=reviewdb;Username=admin;Password=admin123
+
 volumes:
   auth_pgdata:
   users_pgdata:
@@ -181,3 +209,5 @@ volumes:
   entry_pgdata:
   vote_pgdata:
   notification_pgdata:
+  review_pgdata:
+
