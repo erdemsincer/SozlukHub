@@ -1,4 +1,6 @@
-﻿using VoteService.Dtos;
+﻿using MassTransit;
+using Shared.Contracts; // VoteAddedEvent için
+using VoteService.Dtos;
 using VoteService.Entities;
 using VoteService.Repositories;
 
@@ -7,10 +9,12 @@ namespace VoteService.Services
     public class VoteService : IVoteService
     {
         private readonly IVoteRepository _repo;
+        private readonly IPublishEndpoint _publish;
 
-        public VoteService(IVoteRepository repo)
+        public VoteService(IVoteRepository repo, IPublishEndpoint publish)
         {
             _repo = repo;
+            _publish = publish;
         }
 
         public async Task<bool> AddVoteAsync(CreateVoteDto dto, int userId)
@@ -28,6 +32,15 @@ namespace VoteService.Services
 
             await _repo.AddVoteAsync(vote);
             await _repo.SaveChangesAsync();
+
+            // 🔥 VoteAddedEvent publish et
+            await _publish.Publish(new VoteAddedEvent
+            {
+                EntryId = vote.EntryId,
+                UserId = vote.UserId,
+                IsUpvote = vote.IsUpvote
+            });
+
             return true;
         }
 

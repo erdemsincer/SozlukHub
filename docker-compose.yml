@@ -146,9 +146,38 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=vote-postgres;Port=5432;Database=votedb;Username=admin;Password=admin123
 
+
+  notification-postgres:
+    image: postgres:15
+    container_name: notification-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: notificationdb
+    ports:
+      - "55972:5432"
+    volumes:
+      - notification_pgdata:/var/lib/postgresql/data
+
+  notificationservice-api:
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+    container_name: notificationservice-api
+    depends_on:
+      - notification-postgres
+      - rabbitmq
+    ports:
+      - "5606:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=notification-postgres;Port=5432;Database=notificationdb;Username=admin;Password=admin123
+
 volumes:
   auth_pgdata:
   users_pgdata:
   topic_pgdata:
   entry_pgdata:
   vote_pgdata:
+  notification_pgdata:
