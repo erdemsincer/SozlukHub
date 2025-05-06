@@ -40,7 +40,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// ✅ MassTransit + RabbitMQ (Publish için)
+// ✅ CORS EKLENDİ
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// ✅ MassTransit + RabbitMQ
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
@@ -63,6 +74,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCors("AllowAll"); // ✅ CORS middleware burada
+
 app.UseAuthentication();
 app.UseAuthorization();
 
