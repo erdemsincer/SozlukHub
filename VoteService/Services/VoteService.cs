@@ -39,6 +39,7 @@ namespace VoteService.Services
                 EntryId = vote.EntryId,
                 UserId = vote.UserId,
                 IsUpvote = vote.IsUpvote
+
             });
 
             return true;

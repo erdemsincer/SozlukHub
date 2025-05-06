@@ -49,10 +49,21 @@ namespace NotificationService.Services
 
             // 3. E-posta gönder
             await _mail.SendEmailAsync(
-                user.Email,
-                "SözlükHub Bildirimi",
-                $"<b>Merhaba {user.Username},</b><br>{message}"
-            );
+     user.Email,
+     "SözlükHub Bildirimi",
+     $"""
+    <html>
+      <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
+        <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+          <h2 style="color: #2c3e50;">Merhaba {user.Username},</h2>
+          <p style="font-size: 16px; color: #333;">{message}</p>
+          <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+          <p style="font-size: 12px; color: #999;">Bu e-posta, SözlükHub platformu üzerinden otomatik olarak gönderilmiştir.</p>
+        </div>
+      </body>
+    </html>
+    """
+ );
         }
 
         public async Task MarkAsReadAsync(int id)
