@@ -6,6 +6,7 @@ using NotificationService.Consumers;
 using NotificationService.Data;
 using NotificationService.Repositories;
 using NotificationService.Services;
+using NotificationService.Services.Mail;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.Services.AddHttpClient(); // üst kısma ekle
 
 // 🔐 JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -70,6 +72,9 @@ builder.Services.AddDbContext<NotificationDbContext>(options =>
 // Repository & Service
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService.Services.NotificationService>();
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.AddScoped<IMailService, MailService>();
+
 
 // 📨 MassTransit + RabbitMQ
 builder.Services.AddMassTransit(x =>
