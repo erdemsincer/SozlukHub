@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: #4c51bf;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .app-header h1 {
+        font-size: 28px;
+    }
+
+    .app-header nav a {
+        margin-left: 20px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.2s ease;
+    }
+
+        .app-header nav a:hover {
+            opacity: 0.8;
+        }
+
+.app-content {
+    flex: 1;
+    padding: 40px;
+    width: 100%; /* tam geniþlik */
+    max-width: none; /* sýnýrlama kalktý */
+    margin: 0; /* ortalama kaldýrýldý */
+}
