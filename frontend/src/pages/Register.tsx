@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import api from '../services/api';
+import api from '../services/authApi.';
 import './Login.css'; // Aynı CSS'i kullanabiliriz
 
 const Register: React.FC = () => {

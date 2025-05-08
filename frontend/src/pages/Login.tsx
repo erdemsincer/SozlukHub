@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import api from '../services/api';
+import api from '../services/authApi.';
 import './Login.css';
 
 const Login: React.FC = () => {
@@ -15,9 +15,9 @@ const Login: React.FC = () => {
                 password,
             });
 
-            const token = response.data; // backend sadece token döndürüyorsa
-
+            const token = response.data.token; // ✅ sadece string token
             localStorage.setItem('token', token);
+
 
             alert('✅ Giriş başarılı!');
             window.location.href = '/'; // anasayfaya yönlendir
