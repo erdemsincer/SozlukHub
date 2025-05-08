@@ -212,6 +212,8 @@ services:
       - "3000:8080"
     depends_on:
       - authservice-api
+      - entryservice-api
+      - topicservice-api
 
 
 

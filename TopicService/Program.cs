@@ -46,6 +46,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// 🔧 CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // 🔧 PostgreSQL
 builder.Services.AddDbContext<TopicDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -82,6 +93,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAll"); // 👈 CORS aktif edildi
 app.UseAuthentication(); // 👈 JWT kontrolü için gerekli
 app.UseAuthorization();
 
