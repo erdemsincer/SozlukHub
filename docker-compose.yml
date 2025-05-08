@@ -205,15 +205,14 @@ services:
 
   frontend:
     build:
-      context: ./sozlukhub-ui
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "9001:8080"
+      - "8001:80"
     depends_on:
       - authservice-api
-    networks:
-      - sozlukhub
+
 
 
 volumes:
@@ -225,7 +224,5 @@ volumes:
   notification_pgdata:
   review_pgdata:
 
-networks:
-  sozlukhub:
-    driver: bridge
+
 
