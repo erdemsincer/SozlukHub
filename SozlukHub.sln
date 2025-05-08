@@ -24,9 +24,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReviewService", "ReviewService\ReviewService.csproj", "{8A359DDA-FD37-4720-A8CE-24F141311A58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReviewService", "ReviewService\ReviewService.csproj", "{8A359DDA-FD37-4720-A8CE-24F141311A58}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "sozlukhub-ui", "sozlukhub-ui\sozlukhub-ui.esproj", "{38EAE073-9B19-4A1C-964F-5FF751C1B041}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "frontend", "frontend\", "{17F19A68-2686-43A9-A19F-E0EC7756DE7D}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_6784"
+		Debug.AspNetCompiler.PhysicalPath = "frontend\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6784\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_6784"
+		Release.AspNetCompiler.PhysicalPath = "frontend\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6784\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "6784"
+		SlnRelativePath = "frontend\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,12 +85,10 @@ Global
 		{8A359DDA-FD37-4720-A8CE-24F141311A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A359DDA-FD37-4720-A8CE-24F141311A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A359DDA-FD37-4720-A8CE-24F141311A58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{17F19A68-2686-43A9-A19F-E0EC7756DE7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F19A68-2686-43A9-A19F-E0EC7756DE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F19A68-2686-43A9-A19F-E0EC7756DE7D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F19A68-2686-43A9-A19F-E0EC7756DE7D}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,7 +101,6 @@ Global
 		{59BE4A1B-F159-4F7B-9AAC-F7D730D0CEB1} = {DA14D4AC-F135-4849-AE66-887CB62BF4E0}
 		{A2287F5C-BA05-4B08-9D78-F722F7222BA1} = {DA14D4AC-F135-4849-AE66-887CB62BF4E0}
 		{8A359DDA-FD37-4720-A8CE-24F141311A58} = {DA14D4AC-F135-4849-AE66-887CB62BF4E0}
-		{38EAE073-9B19-4A1C-964F-5FF751C1B041} = {DA14D4AC-F135-4849-AE66-887CB62BF4E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {835DDE24-223A-4027-A09E-580025DC0E1B}
