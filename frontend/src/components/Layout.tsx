@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <h1>SozlukHub</h1>
                 <nav>
                     <a href="/">Anasayfa</a>
-                    <a href="/login">Giriþ</a>
+                    <a href="/login">Giris</a>
                     <a href="/register">Kayit Ol</a>
                 </nav>
             </header>
