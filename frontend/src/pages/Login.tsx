@@ -1,6 +1,16 @@
 ﻿import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import api from '../services/authApi.';
 import './Login.css';
+
+
+interface JwtPayload {
+    name?: string;
+    sub?: string;
+    nameid?: string;
+    username?: string;
+    [key: string]: any;
+}
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -15,15 +25,17 @@ const Login: React.FC = () => {
                 password,
             });
 
-            const token = response.data.token; // ✅ sadece string token
+            const token = response.data.token;
             localStorage.setItem('token', token);
 
+            const decoded = jwtDecode<JwtPayload>(token);
+            localStorage.setItem('username', decoded.name || decoded.username || 'Kullanıcı');
 
-            alert('✅ Giriş başarılı!');
-            window.location.href = '/'; // anasayfaya yönlendir
+            alert(`✅ Giriş başarılı, hoş geldin ${decoded.name || decoded.username || 'kullanıcı'}!`);
+            window.location.href = '/';
         } catch (err: any) {
             console.error(err);
-            alert('❌ Giriş başarısız: ' + err.response?.data || 'Sunucu hatası');
+            alert('❌ Giriş başarısız: ' + (err.response?.data || 'Sunucu hatası'));
         }
     };
 

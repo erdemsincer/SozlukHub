@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CreateEntry from './pages/CreateEntry'; 
 import EntryList from './pages/EntryList';
+import EntryDetail from './pages/EntryDetail';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/entry/create" element={<CreateEntry />} /> {/* ✅ burası */}
                     <Route path="/entry/list" element={<EntryList />} />
+                    <Route path="/entry/:id" element={<EntryDetail />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

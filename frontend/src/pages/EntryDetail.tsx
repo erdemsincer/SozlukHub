@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import entryApi from '../services/entryApi';
 import userApi from '../services/userApi';
 import reviewApi from '../services/reviewApi';
-import voteApi from '../services/voteApi';
+import voteApi, { getVoteCount } from '../services/voteApi';
 import './EntryDetail.css';
 
 interface Entry {
@@ -32,19 +32,31 @@ interface Comment {
     createdAt: string;
 }
 
+interface UserVote {
+    hasVoted: boolean;
+    isUpvote: boolean;
+}
+
 const EntryDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [entry, setEntry] = useState<Entry | null>(null);
     const [user, setUser] = useState<UserProfile | null>(null);
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
+    const [userVote, setUserVote] = useState<UserVote | null>(null);
     const token = localStorage.getItem('token');
 
     const fetchEntryData = async () => {
         if (!id) return;
         try {
             const entryRes = await entryApi.get(`/Entry/${id}`);
-            setEntry(entryRes.data);
+            const voteRes = await getVoteCount(Number(id)); // ✅ doğru key'ler
+
+            setEntry({
+                ...entryRes.data,
+                likeCount: voteRes.upvotes,
+                dislikeCount: voteRes.downvotes
+            });
 
             if (entryRes.data.userId) {
                 const userRes = await userApi.get(`/${entryRes.data.userId}`);
@@ -53,8 +65,15 @@ const EntryDetail: React.FC = () => {
 
             const commentRes = await reviewApi.get(`/review/entry/${id}`);
             setComments(commentRes.data);
+
+            if (token) {
+                const voteStatusRes = await voteApi.get(`/status/${id}`);
+                setUserVote(voteStatusRes.data);
+            } else {
+                setUserVote(null);
+            }
         } catch (err: any) {
-            console.error('❌ Entry detay alınamadı:', err.response?.data || err.message || err);
+            console.error('❌ Veri alınamadı:', err.response?.data || err.message || err);
         }
     };
 
@@ -73,7 +92,7 @@ const EntryDetail: React.FC = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setNewComment('');
-            fetchEntryData(); // yorum sonrası yeniden yükle
+            fetchEntryData();
         } catch (err: any) {
             alert('❌ Yorum gönderilemedi: ' + (err.response?.data || err.message));
         }
@@ -82,11 +101,12 @@ const EntryDetail: React.FC = () => {
     const handleVote = async (isUpvote: boolean) => {
         if (!token) return alert("Giriş yapmadan oy kullanamazsın.");
         try {
-            await voteApi.post('', {
-                entryId: Number(id),
-                isUpvote
-            });
-            fetchEntryData(); // oy sonrası entry güncelle
+            await voteApi.post(
+                '',
+                { entryId: Number(id), isUpvote },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            fetchEntryData();
         } catch (err: any) {
             if (err.response?.status === 400) {
                 alert("Zaten oy verdin.");
@@ -121,16 +141,31 @@ const EntryDetail: React.FC = () => {
                 <p><strong>Konu:</strong> {entry.topicName || 'Bilinmiyor'}</p>
                 <p><strong>Yazar:</strong> {entry.username || 'Anonim'} (ID: {entry.userId ?? 'N/A'})</p>
                 <p><strong>Oluşturulma:</strong> {entry.createdAt ? new Date(entry.createdAt).toLocaleString() : 'Bilinmiyor'}</p>
+
                 <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
                     <button
                         onClick={() => handleVote(true)}
-                        style={{ backgroundColor: '#38A169', color: 'white', padding: '8px 14px', borderRadius: '8px', border: 'none' }}
+                        style={{
+                            backgroundColor: userVote?.isUpvote ? '#2F855A' : '#38A169',
+                            color: 'white',
+                            padding: '8px 14px',
+                            borderRadius: '8px',
+                            border: 'none',
+                            opacity: userVote?.hasVoted && !userVote.isUpvote ? 0.7 : 1,
+                        }}
                     >
                         👍 Beğen ({entry.likeCount ?? 0})
                     </button>
                     <button
                         onClick={() => handleVote(false)}
-                        style={{ backgroundColor: '#E53E3E', color: 'white', padding: '8px 14px', borderRadius: '8px', border: 'none' }}
+                        style={{
+                            backgroundColor: userVote?.hasVoted && userVote?.isUpvote === false ? '#C53030' : '#E53E3E',
+                            color: 'white',
+                            padding: '8px 14px',
+                            borderRadius: '8px',
+                            border: 'none',
+                            opacity: userVote?.hasVoted && userVote.isUpvote ? 0.7 : 1,
+                        }}
                     >
                         👎 Beğenme ({entry.dislikeCount ?? 0})
                     </button>

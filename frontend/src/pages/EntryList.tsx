@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import entryApi from '../services/entryApi';
 import './EntryList.css';
 
@@ -6,9 +7,9 @@ interface Entry {
     id: number;
     title: string;
     content: string;
-    topicId: number;
-    topicName?: string;
-    username?: string;
+    topicName: string;
+    username: string;
+    createdAt: string;
 }
 
 const EntryList: React.FC = () => {
@@ -29,23 +30,32 @@ const EntryList: React.FC = () => {
 
     return (
         <div className="entry-list">
-            <h2>📝 Entry Listesi</h2>
+            <h2 className="entry-title">📝 Topluluk Entry Listesi</h2>
             {entries.length === 0 ? (
-                <p className="empty">Henüz entry yok.</p>
+                <p className="empty">Henüz entry bulunamadı.</p>
             ) : (
                 entries.map((entry) => (
-                    <div key={entry.id} className="entry-card">
+                    <div className="entry-card" key={entry.id}>
                         <div className="entry-header">
-                            <div className="avatar">{entry.username?.charAt(0).toUpperCase() || '?'}</div>
-                            <div>
-                                <h3>{entry.title}</h3>
-                                <span className="meta">
-                                    <strong>Konu:</strong> {entry.topicName || `#${entry.topicId}`} &nbsp;|&nbsp;
-                                    <strong>Yazan:</strong> {entry.username || 'Bilinmiyor'}
-                                </span>
+                            <div className="entry-avatar">
+                                {entry.username?.charAt(0).toUpperCase() || '?'}
+                            </div>
+                            <div className="entry-header-content">
+                                <h3 className="entry-heading">
+                                    <Link to={`/entry/${entry.id}`}>{entry.title}</Link>
+                                </h3>
+                                <div className="entry-meta">
+                                    <strong>{entry.username}</strong> &bull;{' '}
+                                    {new Date(entry.createdAt).toLocaleString()} &bull;{' '}
+                                    <em>{entry.topicName}</em>
+                                </div>
                             </div>
                         </div>
-                        <p className="entry-content">{entry.content}</p>
+                        <p className="entry-content">
+                            {entry.content.length > 200
+                                ? entry.content.slice(0, 200) + '...'
+                                : entry.content}
+                        </p>
                     </div>
                 ))
             )}

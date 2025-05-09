@@ -214,6 +214,9 @@ services:
       - authservice-api
       - entryservice-api
       - topicservice-api
+      - userservice-api
+      - reviewservice-api 
+      - voteservice-api
 
 
 
