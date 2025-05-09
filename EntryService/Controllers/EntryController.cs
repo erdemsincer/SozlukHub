@@ -49,5 +49,14 @@ namespace EntryService.Controllers
             await _service.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("topic/{topicId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetByTopicId(int topicId)
+        {
+            var entries = await _service.GetEntriesByTopicIdAsync(topicId);
+            return Ok(entries);
+        }
+
     }
 }
