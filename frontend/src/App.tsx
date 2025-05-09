@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import CreateEntry from './pages/CreateEntry'; // ✅ burası
+import CreateEntry from './pages/CreateEntry'; 
+import EntryList from './pages/EntryList';
+
 
 function App() {
     return (
@@ -17,6 +19,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/entry/create" element={<CreateEntry />} /> {/* ✅ burası */}
+                    <Route path="/entry/list" element={<EntryList />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

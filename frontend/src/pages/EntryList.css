@@ -1,0 +1,71 @@
+.entry-list {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+    .entry-list h2 {
+        text-align: center;
+        color: #4c51bf;
+        margin-bottom: 30px;
+        font-size: 32px;
+    }
+
+.empty {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+.entry-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .entry-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    background: #4c51bf;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.entry-card h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.meta {
+    font-size: 14px;
+    color: #666;
+}
+
+.entry-content {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}

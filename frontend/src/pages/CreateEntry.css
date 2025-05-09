@@ -1,4 +1,4 @@
-.login-wrapper {
+﻿.login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,29 +31,46 @@
         border: 1px solid #ccc;
         border-radius: 8px;
         font-size: 15px;
+        background-color: white;
+        color: #333;
         resize: none;
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background-color: white;
-        color: #333;
+        line-height: 1.2;
+        height: 44px;
+        cursor: pointer;
     }
 
+    /* 🔽 select ikon ve görünüm düzeltmesi */
     .login-form select {
-        background-color: white !important;
-        color: #333 !important;
+        background-image: url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.646 6.146a.5.5 0 0 1 .708 0L8 8.793l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
     }
 
+        /* 🔵 select focus (mavi border engelle) */
+        .login-form select:focus {
+            outline: none;
+            border-color: #4c51bf;
+            box-shadow: none;
+        }
+
+    /* 🟢 option görünüm düzeltmesi */
     .login-form option {
-        background-color: white !important;
-        color: #333 !important;
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
 
+    /* 📝 textarea yükseklik */
     .login-form textarea {
         min-height: 100px;
         line-height: 1.5;
+        resize: vertical;
     }
 
+    /* 🔘 submit button */
     .login-form button {
         background-color: #4c51bf;
         color: white;
