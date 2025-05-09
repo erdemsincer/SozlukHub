@@ -9,5 +9,7 @@ namespace EntryService.Services
         Task<EntryDto?> GetByIdAsync(int id);
         Task CreateAsync(CreateEntryDto dto, int userId, string username);
         Task DeleteAsync(int id);
+        Task<List<EntryDto>> GetEntriesByTopicIdAsync(int topicId);
+
     }
 }

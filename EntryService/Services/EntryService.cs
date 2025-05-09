@@ -129,5 +129,22 @@ namespace EntryService.Services
         {
             await _repo.DeleteAsync(id);
         }
+        public async Task<List<EntryDto>> GetEntriesByTopicIdAsync(int topicId)
+        {
+            var entries = await _repo.GetEntriesByTopicIdAsync(topicId);
+
+            return entries.Select(e => new EntryDto
+            {
+                Id = e.Id,
+                Title = e.Title,
+                Content = e.Content,
+                TopicId = e.TopicId,
+                Username = e.Username,
+                CreatedAt = e.CreatedAt,
+                LikeCount = e.LikeCount,
+                DislikeCount = e.DislikeCount
+            }).ToList();
+        }
+
     }
 }
