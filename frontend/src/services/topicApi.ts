@@ -15,5 +15,9 @@ topicApi.interceptors.request.use((config) => {
     }
     return config;
 });
+export const getAllTopics = async () => {
+    const response = await topicApi.get('/');
+    return response.data;
+};
 
 export default topicApi;

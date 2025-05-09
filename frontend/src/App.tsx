@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import CreateEntry from './pages/CreateEntry'; 
 import EntryList from './pages/EntryList';
 import EntryDetail from './pages/EntryDetail';
+import TopicList from './pages/TopicList';
+import TopicEntries from './pages/TopicEntries';
 
 
 function App() {
@@ -22,6 +24,9 @@ function App() {
                     <Route path="/entry/create" element={<CreateEntry />} /> {/* ✅ burası */}
                     <Route path="/entry/list" element={<EntryList />} />
                     <Route path="/entry/:id" element={<EntryDetail />} />
+                    <Route path="/topics" element={<TopicList />} />
+                    <Route path="/topics/:topicId" element={<TopicEntries />} />
+
                 </Routes>
             </Layout>
         </BrowserRouter>
