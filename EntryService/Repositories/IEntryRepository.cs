@@ -8,5 +8,7 @@ namespace EntryService.Repositories
         Task<Entry?> GetByIdAsync(int id);
         Task CreateAsync(Entry entry);
         Task DeleteAsync(int id); // Soft delete
+        Task<List<Entry>> GetEntriesByTopicIdAsync(int topicId);
+
     }
 }

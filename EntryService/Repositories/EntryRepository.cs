@@ -40,5 +40,14 @@ namespace EntryService.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<List<Entry>> GetEntriesByTopicIdAsync(int topicId)
+        {
+            return await _context.Entries
+                .Where(e => e.TopicId == topicId && !e.IsDeleted)
+                .OrderByDescending(e => e.CreatedAt)
+                .ToListAsync();
+        }
+
+
     }
 }
