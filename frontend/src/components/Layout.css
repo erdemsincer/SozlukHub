@@ -1,4 +1,4 @@
-* {
+ï»¿* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -8,6 +8,12 @@ body, html {
     height: 100%;
     font-family: 'Segoe UI', sans-serif;
     background-color: #f8f9fa;
+    color: #2d3748;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .app-layout {
@@ -16,6 +22,7 @@ body, html {
     min-height: 100vh;
 }
 
+/* ðŸ”µ HEADER */
 .app-header {
     background-color: #4c51bf;
     color: white;
@@ -29,26 +36,80 @@ body, html {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-    .app-header h1 {
+    .app-header .logo {
         font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 1px;
     }
 
-    .app-header nav a {
-        margin-left: 20px;
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-        transition: opacity 0.2s ease;
+.nav-links a {
+    margin-left: 24px;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    transition: opacity 0.2s ease;
+}
+
+    .nav-links a:hover {
+        opacity: 0.8;
     }
 
-        .app-header nav a:hover {
-            opacity: 0.8;
-        }
-
+/* ðŸ”µ MAIN */
 .app-content {
     flex: 1;
-    padding: 40px;
-    width: 100%; /* tam geniþlik */
-    max-width: none; /* sýnýrlama kalktý */
-    margin: 0; /* ortalama kaldýrýldý */
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
 }
+
+/* ðŸ”µ FOOTER */
+.app-footer {
+    background: #edf2f7;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #4a5568;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* ðŸ”§ Responsive */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+        .nav-links a {
+            margin-left: 0;
+        }
+}
+.welcome-text {
+    margin-left: 20px;
+    font-weight: 500;
+    color: #f0f0f0;
+    font-size: 15px;
+}
+
+.logout-btn {
+    margin-left: 16px;
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .logout-btn:hover {
+        background-color: #c53030;
+    }
