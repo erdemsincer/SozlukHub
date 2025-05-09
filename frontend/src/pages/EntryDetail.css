@@ -53,15 +53,14 @@
             color: #2c5282;
         }
 
-
 .entry-user-info {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     background: #f8f9fa;
-    padding: 12px 16px;
-    border-radius: 10px;
+    padding: 14px 18px;
+    border-radius: 12px;
 }
 
     .entry-user-info .avatar {
@@ -71,16 +70,67 @@
         object-fit: cover;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
     }
+
 .comment-card {
     background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 12px 16px;
+    border-radius: 10px;
+    padding: 14px 18px;
     margin-top: 12px;
     border: 1px solid #e0e0e0;
 }
 
 .comment-meta {
-    font-size: 13px;
+    font-size: 13.5px;
     color: #666;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
+
+.comment-form {
+    margin-top: 32px;
+}
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        resize: vertical;
+        transition: border-color 0.2s ease;
+    }
+
+        .comment-form textarea:focus {
+            border-color: #4c51bf;
+            outline: none;
+        }
+
+    .comment-form button {
+        margin-top: 10px;
+        padding: 10px 16px;
+        border-radius: 6px;
+        background-color: #4c51bf;
+        color: white;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        .comment-form button:hover {
+            background-color: #3b42a1;
+        }
+
+.login-info {
+    margin-top: 32px;
+    color: #444;
+}
+
+    .login-info a {
+        color: #4c51bf;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+        .login-info a:hover {
+            text-decoration: underline;
+        }
