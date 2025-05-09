@@ -12,5 +12,8 @@ entryApi.interceptors.request.use((config) => {
     }
     return config;
 });
-
+export const getEntriesByTopic = async (topicId: number) => {
+    const response = await entryApi.get(`/Entry/topic/${topicId}`);
+    return response.data;
+};
 export default entryApi;
