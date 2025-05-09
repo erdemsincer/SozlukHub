@@ -8,6 +8,15 @@ using ReviewService.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // 🔐 JWT Ayarlarını al
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -88,8 +97,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // JWT doğrulama
+app.UseCors("AllowFrontend"); // 🔥 CORS aktif
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

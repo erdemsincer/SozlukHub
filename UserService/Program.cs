@@ -10,6 +10,17 @@ using UserService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 🔧 CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React frontend URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // 🔧 Controller, Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -94,7 +105,7 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-// 🌐 Swagger ve Middleware
+// 🌐 Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -103,7 +114,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // 👈 Önemli: Authorization'dan önce
+app.UseCors("AllowFrontend"); // ✅ CORS aktif edildi
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
