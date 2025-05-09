@@ -5,7 +5,7 @@ import './CreateEntry.css';
 
 interface Topic {
     id: number;
-    name: string;
+    title: string;
 }
 
 const CreateEntry: React.FC = () => {
@@ -74,7 +74,7 @@ const CreateEntry: React.FC = () => {
                 >
                     {topics.map((topic) => (
                         <option key={topic.id} value={topic.id}>
-                            {topic.name}
+                            {topic.title}
                         </option>
                     ))}
                 </select>
