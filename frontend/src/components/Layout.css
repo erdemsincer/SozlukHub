@@ -61,7 +61,9 @@ a {
     max-width: 1000px;
     margin: 0 auto;
     width: 100%;
+    color: #2d3748; /* ✅ yazılar artık koyu görünecek */
 }
+
 
 /* 🔵 FOOTER */
 .app-footer {
