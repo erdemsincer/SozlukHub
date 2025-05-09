@@ -1,71 +1,93 @@
-.entry-list {
+﻿.entry-list {
     max-width: 900px;
     margin: 40px auto;
-    padding: 20px;
+    padding: 0 20px;
     font-family: 'Segoe UI', sans-serif;
 }
 
-    .entry-list h2 {
-        text-align: center;
-        color: #4c51bf;
-        margin-bottom: 30px;
-        font-size: 32px;
-    }
+.entry-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4c51bf;
+    font-size: 24px;
+}
 
 .empty {
     text-align: center;
-    color: #888;
-    font-style: italic;
+    color: gray;
+    font-size: 16px;
 }
 
 .entry-card {
-    background: white;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    transition: 0.2s ease-in-out;
 }
 
     .entry-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        transform: scale(1.01);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
     }
 
 .entry-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
 }
 
-.avatar {
-    background: #4c51bf;
+.entry-avatar {
+    background-color: #4c51bf;
     color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
     font-weight: bold;
-    margin-right: 15px;
-    font-size: 18px;
+    flex-shrink: 0;
 }
 
-.entry-card h3 {
+.entry-header-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.entry-heading {
     margin: 0;
     font-size: 20px;
-    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.meta {
-    font-size: 14px;
-    color: #666;
+    .entry-heading a {
+        color: #2d3748;
+        text-decoration: none;
+    }
+
+        .entry-heading a:hover {
+            text-decoration: underline;
+        }
+
+.entry-meta {
+    font-size: 13px;
+    color: #718096;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .entry-content {
-    font-size: 16px;
-    color: #444;
-    line-height: 1.6;
-    white-space: pre-wrap;
+    font-size: 15px;
+    color: #2d3748;
+    margin-top: 10px;
+    line-height: 1.5;
 }
