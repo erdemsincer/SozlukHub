@@ -41,12 +41,26 @@ namespace VoteService.Controllers
             return success ? Ok("Vote removed.") : NotFound("Vote not found.");
         }
 
-        [HttpGet("{entryId}")]
+        [HttpGet("entry/{entryId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetVotes(int entryId)
         {
             var result = await _service.GetVoteCountAsync(entryId);
             return Ok(result);
         }
+
+
+        [HttpGet("status/{entryId}")]
+        public async Task<IActionResult> GetUserVoteStatus(int entryId)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdStr, out var userId))
+                return Unauthorized();
+
+            var result = await _service.GetUserVoteStatusAsync(entryId, userId);
+
+            return Ok(result); // örn: { "hasVoted": true, "isUpvote": true }
+        }
+
     }
 }
