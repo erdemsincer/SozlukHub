@@ -9,5 +9,6 @@ namespace VoteService.Repositories
         Task AddVoteAsync(Vote vote);
         Task DeleteVoteAsync(Vote vote);
         Task SaveChangesAsync();
+
     }
 }

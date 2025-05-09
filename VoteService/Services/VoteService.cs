@@ -66,5 +66,18 @@ namespace VoteService.Services
                 Downvotes = votes.Count(v => !v.IsUpvote)
             };
         }
+        public async Task<UserVoteStatusDto> GetUserVoteStatusAsync(int entryId, int userId)
+        {
+            var vote = await _repo.GetVoteAsync(entryId, userId);
+
+            return vote == null
+                ? new UserVoteStatusDto { HasVoted = false }
+                : new UserVoteStatusDto
+                {
+                    HasVoted = true,
+                    IsUpvote = vote.IsUpvote
+                };
+        }
+
     }
 }

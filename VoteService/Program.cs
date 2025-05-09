@@ -12,11 +12,27 @@ using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✨ Claim map fix (nameid vs ClaimTypes.NameIdentifier)
+// AddCors hizmetini ekle
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // 🔧 Controllers + Swagger
-builder.Services.AddControllers();
+// 🔧 Controllers + JSON camelCase ayarı eklendi
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -101,7 +117,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAll"); // ✅ CORS burada
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
