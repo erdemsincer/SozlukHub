@@ -29,7 +29,10 @@ const Login: React.FC = () => {
             localStorage.setItem('token', token);
 
             const decoded = jwtDecode<JwtPayload>(token);
-            localStorage.setItem('username', decoded.name || decoded.username || 'Kullanıcı');
+            localStorage.setItem('username', decoded.unique_name || 'Kullanıcı');
+
+            alert(`✅ Giriş başarılı, hoş geldin ${decoded.unique_name || 'kullanıcı'}!`);
+
 
             alert(`✅ Giriş başarılı, hoş geldin ${decoded.name || decoded.username || 'kullanıcı'}!`);
             window.location.href = '/';
